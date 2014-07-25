@@ -208,7 +208,11 @@
       };
 
       self._onResize = function(e) {
-        _setHelperLayerPosition.call(self, document.querySelector('.introjs-helperLayer'));
+        _waitForFinalEvent.call(this, function(){
+          var helperLayer = document.querySelector('.introjs-helperLayer');
+          _setHelperLayerPosition.call(self, helperLayer);
+        },600, 'resizeCallback');
+
       };
 
       if (window.addEventListener) {
@@ -228,6 +232,26 @@
     return false;
   }
 
+ 
+ /** wait till the end of an event before firing callback
+  * @api private
+  * @method _waitforFinalEvent
+  * @param{function} callback
+  * @param{number} ms
+  * @param{string} uniqueId
+  */
+  var _waitForFinalEvent = (function () {
+    var timers = {};
+    return function (callback, ms, uniqueId) {
+      if (!uniqueId) {
+        uniqueId = "Don't call this twice without a uniqueId";
+      }
+      if (timers[uniqueId]) {
+        clearTimeout (timers[uniqueId]);
+      }
+      timers[uniqueId] = setTimeout(callback, ms);
+    };
+  })();
  /*
    * makes a copy of the object
    * @api private
