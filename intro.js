@@ -211,7 +211,17 @@
         _waitForFinalEvent.call(this, function(){
           var helperLayer = document.querySelector('.introjs-helperLayer');
           _setHelperLayerPosition.call(self, helperLayer);
-        },600, 'resizeCallback');
+          //move tooltip too
+          setTimeout(function() {
+            currentElement = self._introItems[self._currentStep]; 
+            oldtooltipContainer = helperLayer.querySelector('.introjs-tooltip');
+            oldArrowLayer = helperLayer.querySelector('.introjs-arrow');
+            oldHelperNumberLayer = helperLayer.querySelector('.introjs-helperNumberLayer');
+            //fire tooltip position update
+            _placeTooltip.call(self, currentElement.element, oldtooltipContainer, oldArrowLayer, oldHelperNumberLayer);
+          }, 350);
+
+        },/* This should be customizable*/ 600, 'resizeCallback');
 
       };
 
