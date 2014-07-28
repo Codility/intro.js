@@ -485,6 +485,7 @@
 
   /**
    * Update the position of the helper layer on the screen
+   * Also updates the position of the disable layer if it exists
    *
    * @api private
    * @method _setHelperLayerPosition
@@ -494,21 +495,52 @@
     if (helperLayer) {
       //prevent error when `this._currentStep` in undefined
       if (!this._introItems[this._currentStep]) return;
+ 
+      //make helperLayer invisible before setting getting offsets
+      //this way the old position doesn't influence the new one
+      //also do this for the disableInteractionLayer if it's present
+      disableInteractionLayer = document.querySelector('.introjs-disableInteraction');
 
+      if(disableInteractionLayer !== null){
+        disableInteractionLayer.style.display = 'none';
+      }
+      helperLayer.style.display = 'none';
+      
+      //get position
       var currentElement  = this._introItems[this._currentStep],
           elementPosition = _getOffset(currentElement.element),
           widthHeightPadding = 10;
-
       if (currentElement.position == 'floating') {
         widthHeightPadding = 0;
       }
-
+      
+      //unhide
+      helperLayer.style.display = '';
+      if (disableInteractionLayer !== null){
+        disableInteractionLayer.style.display = '';
+      }
+      //flush pending style changes so we get animation
+      //accessing a property of object returned by getComputedStyle causes a flush
+      //see: http://timtaubert.de/blog/2012/09/css-transitions-for-dynamically-created-dom-elements/
+      var doFlush = window.getComputedStyle(helperLayer).opacity;
+      
       //set new position to helper layer
-      helperLayer.setAttribute('style', 'width: ' + (elementPosition.width  + widthHeightPadding)  + 'px; ' +
-                                        'height:' + (elementPosition.height + widthHeightPadding)  + 'px; ' +
-                                        'top:'    + (elementPosition.top    - 5)   + 'px;' +
-                                        'left: '  + (elementPosition.left   - 5)   + 'px;');
+      //and optionally disableInteractionLayer 
+      _updatePosition.call(this, helperLayer, elementPosition.top, elementPosition.left, 
+        elementPosition.width, elementPosition.height, widthHeightPadding);
+      if(disableInteractionLayer !== null){
+        _updatePosition.call(this, disableInteractionLayer, elementPosition.top, elementPosition.left, 
+          elementPosition.width, elementPosition.height, widthHeightPadding); 
+
+      }
     }
+  }
+
+  function _updatePosition(element, top, left, width, height, padding){
+      element.setAttribute('style', 'width: ' + (width  + padding)  + 'px; ' +
+                                        'height:' + (height + padding)  + 'px; ' +
+                                        'top:'    + (top    - 5)   + 'px;' +
+                                        'left: '  + (left   - 5)   + 'px;');
   }
 
   function _disableInteraction(){
@@ -518,8 +550,6 @@
       disableInteractionLayer.className = 'introjs-disableInteraction';
       this._targetElement.appendChild(disableInteractionLayer);
     }
-    _setHelperLayerPosition.call(this, disableInteractionLayer);
-
   }
   /**
    * Show an element on the page
@@ -537,6 +567,11 @@
     var self = this,
         oldHelperLayer = document.querySelector('.introjs-helperLayer'),
         elementPosition = _getOffset(targetElement.element);
+
+    //disable interaction
+    if (this._options.disableInteraction === true){
+      _disableInteraction.call(self);
+    }
 
     if (oldHelperLayer != null) {
       var oldHelperNumberLayer = oldHelperLayer.querySelector('.introjs-helperNumberLayer'),
@@ -722,10 +757,6 @@
       _placeTooltip.call(self, targetElement.element, tooltipLayer, arrowLayer, helperNumberLayer);
     }
 
-    //disable interaction
-    if (this._options.disableInteraction === true){
-      _disableInteraction.call(self);
-    }
     if (this._currentStep == 0 && this._introItems.length > 1) {
       prevTooltipButton.className = 'introjs-button introjs-prevbutton introjs-disabled';
       nextTooltipButton.className = 'introjs-button introjs-nextbutton';
