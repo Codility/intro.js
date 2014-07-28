@@ -126,7 +126,8 @@
             intro: currentElement.getAttribute('data-intro'),
             step: parseInt(currentElement.getAttribute('data-step'), 10),
             tooltipClass: currentElement.getAttribute('data-tooltipClass'),
-            position: currentElement.getAttribute('data-position') || this._options.tooltipPosition
+            position: currentElement.getAttribute('data-position') || this._options.tooltipPosition,
+            padding: currentElement.getAttribute('data-padding')
           };
         }
       }
@@ -152,7 +153,8 @@
             intro: currentElement.getAttribute('data-intro'),
             step: nextStep + 1,
             tooltipClass: currentElement.getAttribute('data-tooltipClass'),
-            position: currentElement.getAttribute('data-position') || this._options.tooltipPosition
+            position: currentElement.getAttribute('data-position') || this._options.tooltipPosition,
+            padding: currentElement.getAttribute('data-padding')
           };
         }
       }
@@ -487,9 +489,13 @@
       //prevent error when `this._currentStep` in undefined
       if (!this._introItems[this._currentStep]) return;
 
+      var definedPadding = this._introItems[this._currentStep].padding;
+      if(definedPadding === undefined){
+        definedPadding = 5;
+      }
       var currentElement  = this._introItems[this._currentStep],
           elementPosition = _getOffset(currentElement.element),
-          widthHeightPadding = 10;
+          widthHeightPadding = 2*definedPadding;
 
       if (currentElement.position == 'floating') {
         widthHeightPadding = 0;
@@ -498,8 +504,8 @@
       //set new position to helper layer
       helperLayer.setAttribute('style', 'width: ' + (elementPosition.width  + widthHeightPadding)  + 'px; ' +
                                         'height:' + (elementPosition.height + widthHeightPadding)  + 'px; ' +
-                                        'top:'    + (elementPosition.top    - 5)   + 'px;' +
-                                        'left: '  + (elementPosition.left   - 5)   + 'px;');
+                                        'top:'    + (elementPosition.top    - definedPadding)   + 'px;' +
+                                        'left: '  + (elementPosition.left   - definedPadding)   + 'px;');
     }
   }
 
