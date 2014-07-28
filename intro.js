@@ -1,6 +1,7 @@
 /**
  * Intro.js v0.9.0
- * https://github.com/usablica/intro.js
+ * fork: https://github.com/Codility/intro.js
+ * original repo: https://github.com/usablica/intro.js
  * MIT licensed
  *
  * Copyright (C) 2013 usabli.ca - A weekend project by Afshin Mehrabani (@afshinmeh)
