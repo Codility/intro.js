@@ -126,7 +126,8 @@
             intro: currentElement.getAttribute('data-intro'),
             step: parseInt(currentElement.getAttribute('data-step'), 10),
             tooltipClass: currentElement.getAttribute('data-tooltipClass'),
-            position: currentElement.getAttribute('data-position') || this._options.tooltipPosition
+            position: currentElement.getAttribute('data-position') || this._options.tooltipPosition,
+            padding: currentElement.getAttribute('data-padding')
           };
         }
       }
@@ -152,7 +153,8 @@
             intro: currentElement.getAttribute('data-intro'),
             step: nextStep + 1,
             tooltipClass: currentElement.getAttribute('data-tooltipClass'),
-            position: currentElement.getAttribute('data-position') || this._options.tooltipPosition
+            position: currentElement.getAttribute('data-position') || this._options.tooltipPosition,
+            padding: currentElement.getAttribute('data-padding')
           };
         }
       }
