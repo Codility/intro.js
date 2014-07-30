@@ -212,7 +212,23 @@
       };
 
       self._onResize = function(e) {
-        _setHelperLayerPosition.call(self, document.querySelector('.introjs-helperLayer'));
+        _waitForFinalEvent.call(this, function(){
+          var helperLayer = document.querySelector('.introjs-helperLayer');
+          _setHelperLayerPosition.call(self, helperLayer);
+          //move tooltip too
+          if (helperLayer !== null) {
+            setTimeout(function() {
+              currentElement = self._introItems[self._currentStep]; 
+              oldtooltipContainer = helperLayer.querySelector('.introjs-tooltip');
+              oldArrowLayer = helperLayer.querySelector('.introjs-arrow');
+              oldHelperNumberLayer = helperLayer.querySelector('.introjs-helperNumberLayer');
+              //fire tooltip position update
+              _placeTooltip.call(self, currentElement.element, oldtooltipContainer, oldArrowLayer, oldHelperNumberLayer);
+            }, 350);
+          }
+
+        },/* This should be customizable*/ 600, 'resizeCallback');
+
       };
 
       if (window.addEventListener) {
@@ -232,6 +248,26 @@
     return false;
   }
 
+ 
+ /** wait till the end of an event before firing callback
+  * @api private
+  * @method _waitforFinalEvent
+  * @param{function} callback
+  * @param{number} ms
+  * @param{string} uniqueId
+  */
+  var _waitForFinalEvent = (function () {
+    var timers = {};
+    return function (callback, ms, uniqueId) {
+      if (!uniqueId) {
+        uniqueId = "Don't call this twice without a uniqueId";
+      }
+      if (timers[uniqueId]) {
+        clearTimeout (timers[uniqueId]);
+      }
+      timers[uniqueId] = setTimeout(callback, ms);
+    };
+  })();
  /*
    * makes a copy of the object
    * @api private
@@ -374,8 +410,10 @@
     //clean listeners
     if (window.removeEventListener) {
       window.removeEventListener('keydown', this._onKeyDown, true);
+      window.removeEventListener("resize", this._onResize, true);
     } else if (document.detachEvent) { //IE
       document.detachEvent('onkeydown', this._onKeyDown);
+      document.detachEvent("onresize", this._onResize);
     }
 
     //set the step to zero
