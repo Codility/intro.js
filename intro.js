@@ -1,6 +1,7 @@
 /**
  * Intro.js v0.9.0
- * https://github.com/usablica/intro.js
+ * fork: https://github.com/Codility/intro.js
+ * original repo: https://github.com/usablica/intro.js
  * MIT licensed
  *
  * Copyright (C) 2013 usabli.ca - A weekend project by Afshin Mehrabani (@afshinmeh)
@@ -587,7 +588,9 @@
       //flush pending style changes so we get animation
       //accessing a property of object returned by getComputedStyle causes a flush
       //see: http://timtaubert.de/blog/2012/09/css-transitions-for-dynamically-created-dom-elements/
-      var doFlush = window.getComputedStyle(helperLayer).opacity;
+      if (window.getComputedStyle !== undefined) { // ie8
+          var doFlush = window.getComputedStyle(helperLayer).opacity;
+      }
       
       //set new position to helper layer
       //and optionally disableInteractionLayer 
