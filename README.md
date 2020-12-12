@@ -58,7 +58,7 @@ In order to use templates, all you need to do is appending the template styleshe
 
 ## API
 
-###introJs([targetElm])
+### introJs([targetElm])
 
 Creating an introJs object.
 
@@ -79,7 +79,7 @@ introJs("#intro-farm") //start introduction for element id='intro-farm'
 
 -----
 
-###introJs.start()
+### introJs.start()
 
 Start the introduction for defined element(s).
 
@@ -94,7 +94,7 @@ introJs().start()
 ````
 -----
 
-###introJs.goToStep(step)
+### introJs.goToStep(step)
 
 Go to specific step of introduction.
 
@@ -113,7 +113,7 @@ introJs().goToStep(2).start(); //starts introduction from step 2
 
 -----
 
-###introJs.nextStep()
+### introJs.nextStep()
 
 Go to next step of introduction.
 
@@ -129,7 +129,7 @@ introJs().start().nextStep();
 
 -----
 
-###introJs.previousStep()
+### introJs.previousStep()
 
 Go to previous step of introduction.
 
@@ -145,7 +145,7 @@ introJs().goToStep(3).start().previousStep(); //starts introduction from step 2
 
 -----
 
-###introJs.exit()
+### introJs.exit()
 
 Exit the introduction.
 
@@ -161,7 +161,7 @@ introJs().exit()
 
 -----
 
-###introJs.setOption(option, value)
+### introJs.setOption(option, value)
 
 Set a single option to introJs object.
 
@@ -184,7 +184,7 @@ introJs().setOption("skipLabel", "Exit");
 
 ----
 
-###introJs.setOptions(options)
+### introJs.setOptions(options)
 
 Set a group of options to the introJs object.
 
@@ -204,7 +204,7 @@ introJs().setOptions({ 'skipLabel': 'Exit', 'tooltipPosition': 'right' });
 
 ----
 
-###introJs.refresh()
+### introJs.refresh()
 
 To refresh and order layers manually
 
@@ -221,7 +221,7 @@ introJs().refresh();
 ----
 
 
-###introJs.oncomplete(providedCallback)
+### introJs.oncomplete(providedCallback)
 
 Set callback for when introduction completed.
 
@@ -242,7 +242,7 @@ introJs().oncomplete(function() {
 
 -----
 
-###introJs.onexit(providedCallback)
+### introJs.onexit(providedCallback)
 
 Set callback to exit of introduction. Exit also means pressing `ESC` key and clicking on the overlay layer by the user.
 
@@ -263,7 +263,7 @@ introJs().onexit(function() {
 
 -----
 
-###introJs.onchange(providedCallback)
+### introJs.onchange(providedCallback)
 
 Set callback to change of each step of introduction. Given callback function will be called after completing each step.
 The callback function receives the element of the new step as an argument.
@@ -285,7 +285,7 @@ introJs().onchange(function(targetElement) {
 
 -----
 
-###introJs.onbeforechange(providedCallback)
+### introJs.onbeforechange(providedCallback)
 
 Given callback function will be called before starting a new step of introduction. The callback function receives the element of the new step as an argument.
 
@@ -306,7 +306,7 @@ introJs().onbeforechange(function(targetElement) {
 
 -----
 
-###introJs.onafterchange(providedCallback)
+### introJs.onafterchange(providedCallback)
 
 Given callback function will be called after starting a new step of introduction. The callback function receives the element of the new step as an argument.
 
@@ -326,13 +326,13 @@ introJs().onafterchange(function(targetElement) {
 ````
 
 -----
-###Attributes:
+### Attributes:
  - `data-intro`: The tooltip text of step
  - `data-step`: Optionally define the number (priority) of step
  - `data-tooltipClass`: Optionally define a CSS class for tooltip
  - `data-position`: Optionally define the position of tooltip, `top`, `left`, `right`, `bottom`, `bottom-left-aligned` (same as 'bottom'), 'bottom-middle-aligned' and 'bottom-right-aligned'. Default is `bottom`
 
-###Options:
+### Options:
 
  - `steps`: For defining steps using JSON configuration (see [this](https://github.com/usablica/intro.js/blob/master/example/programmatic/index.html) example)
  - `nextLabel`: Next button label
